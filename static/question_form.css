@@ -1,0 +1,47 @@
+/*전체 조정*/
+.row{
+    width:70%;
+    margin:0 auto;
+    margin-top:10%;
+}
+
+/* 왼쪽 사이드 바 */
+.border-top.border-secondary{
+    position: fixed; /* 화면에 고정 */
+    left: 0; /* 왼쪽에 위치 */
+    top: 25%; /* 세로 중앙 정렬 */
+    transform: translateY(-50%); /* 수직 중앙 정렬 */
+    width:10%;
+    text-align: center;
+}
+
+/* 왼쪽 사이드바 헤더 */
+.rounded-0.list-group-item.list-group-item-action.list-group-item-light.active{
+    background-color:#20c997;
+    border:1px solid gainsboro;
+}
+
+.list-group{
+    background-color:#20c997 ;
+}
+
+.my-3.border-bottom.pb-2{
+font-weight: bold;
+}
+
+/* 댓글 작성란 */
+#content{
+    margin-top:1em;
+}
+
+/* 저장하기 */
+.btn.btn-primary{
+    margin-top:1em;
+    float:right;
+    background-color: #38B2A5;
+}
+
+/* 제목 + 작성란*/
+.form-group{
+    margin-bottom:1em;
+}

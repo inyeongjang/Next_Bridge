@@ -1,0 +1,122 @@
+/* content 전체 div */
+.content_block.p-2{
+    width: 65%; /* 고정 너비 */
+    margin: 0 auto; /* 가로 중앙 정렬 */
+}
+
+/* 전체 */
+.row{
+    width:85%;
+    margin: 0 auto;
+    margin-top:10%;
+}
+
+/* 왼쪽 사이드 바 */
+.border-top.border-secondary{
+    position: fixed; /* 화면에 고정 */
+    left: 0; /* 왼쪽에 위치 */
+    top: 25%; /* 세로 중앙 정렬 */
+    transform: translateY(-50%); /* 수직 중앙 정렬 */
+    width:10%;
+    text-align: center;
+}
+
+/* 왼쪽 사이드바 헤더 */
+.rounded-0.list-group-item.list-group-item-action.list-group-item-light.active{
+    background-color:#20c997;
+    border:1px solid gainsboro;
+}
+
+/* 등록된 글의 제목 */
+.content_block.p-2>h4{
+    font-size:1.5em;
+}
+
+/* 추천 개수 카운팅 */
+.bg-light.text-center.p-3.border.font-weight-bolder.mb-1{
+    width:50px;
+    height:50px;
+    text-align: center;
+}
+
+/* 추천 */
+.recommend.btn.btn-sm.btn-secondary.btn-block.my-1{
+    background-color:#38B2A5;
+    margin-left:10%;
+}
+
+
+/* 글 내용 */
+.card-body{
+    border:1px solid #B2E0E0;
+}
+
+/* 프로필 + 수정 일시 상자 */
+.badge.bg-light.text-dark.p-2.text-left{
+    border:3px solid #b2e0d9;
+}
+
+.badge.bg-light.text-dark.p-2.text-left.mx-3{
+    float:right;
+}
+
+/* n개의 답변이 있습니다 */
+.col-4.py-2{
+    margin-top:2em;
+    font-size:2em;
+}
+
+/* 최신순 */
+.form-control.so{
+    float:right;
+    margin-top:4em;
+    text-align: center;
+    width: 100px;
+}
+
+/* 답변 등록 div */
+#content{
+    margin: 0 auto; /* 가로 중앙 정렬 */
+    width:90%;
+    height:30%;
+    margin-left:8%;
+
+    border:4px solid #B2E0E0;
+}
+
+/* 답변 등록하기 버튼 */
+.btn.btn-primary{
+margin-top:2%;
+float:right;
+margin-right:2%;
+background-color:#38B2A5;
+border:none;
+}
+
+
+/* 댓글 추가 */
+.small.next{
+    text-decoration: none;
+    color:#00796b;;
+    font:bold;
+}
+
+/* 대댓글 수정+삭제 */
+.small,.small.delete{
+    margin:0 0.1em;
+    text-decoration: none;
+    color:#004d40;
+}
+
+/* 대댓글 프로필 */
+.card-header{
+    border:1px solid #a8d7d7;
+}
+
+/* 대댓글 날짜 */
+.card-footer.text-muted{
+    margin-top:1em;
+    background-color: #d7fcf1;
+}
+
+/* ---------------- home_2 (등록된 글) ---------------- */

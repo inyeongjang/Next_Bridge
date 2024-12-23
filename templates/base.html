@@ -1,0 +1,51 @@
+{% load static %}
+<!doctype html>
+<html lang="ko">
+<head>
+    <!-- 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gamja+Flower&family=Gowun+Dodum&family=Jua&family=Poor+Story&display=swap" rel="stylesheet">
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+    <!-- home CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+
+    <!-- 국기와 함께 국가 선택 -->
+    <!-- flag-icon-css 스타일 추가 -->
+    <link rel="stylesheet"  href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css"/>
+    <!-- favicon.ico 추가 (optional) -->
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <title>NextBridge</title>
+</head>
+<body>
+<!-- 네비게이션바 -->
+{% include "navbar.html" %}
+<!-- 기본 템플릿 안에 삽입될 내용 Start -->
+<div class="container my-3">
+    <div class="row">
+        <!-- Sidebar: /home 경로에서만 표시 -->
+        {% if "/home" in request.path %}
+        <div class="col-sm-12 col-md-3 col-lg-2 p-2">
+            {% include "sidebar.html" %}
+        </div>
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+<!-- 기본 템플릿 안에 삽입될 내용 End -->
+
+
+<!-- Bootstrap JS -->
+<script src="{% static 'bootstrap.min.js' %}"></script>
+<!-- 자바스크립트(삭제) Start -->
+{% block script %}
+{% endblock %}
+<!-- 자바스크립트 End -->
+</body>
+</html>

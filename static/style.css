@@ -1,0 +1,213 @@
+/* 미디어쿼리 */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column; /* 작은 화면에서 수직 방향으로 정렬 */
+    }
+
+    .nav-item {
+        margin: 0.5em 0; /* 수직 여백 조정 */
+    }
+
+    .row.align-items-center.justify-content-between {
+        flex-direction: column; /* 세로로 배치 */
+        align-items: center; /* 가운데 정렬 */
+    }
+
+    /* 최신순 드롭다운 여백 */
+    .form-control.so {
+        margin-bottom: 10px; /* 버튼과 간격 추가 */
+    }
+}
+/* ---------------- 고정 ---------------- */
+
+body {
+    font-family: "Gowun Dodum", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+/* ---------------- 폰트 ---------------- *
+
+/* navbar 전체 */
+.navbar.navbar-expand-lg.navbar-light.bg-light.border-bottom {
+    position: fixed; /* 고정바 */
+    left: 0;
+    top: 0;
+    right: 0;
+    width: 100%; /* 화면 전체 너비 */
+    display: flex; /* Flexbox 사용 */
+    align-items: center; /* 수직 중앙 정렬 */
+    padding: 0; /* 필요에 따라 패딩 추가 가능 */
+    z-index: 1000; /* 다른 요소 위에 보이도록 설정 */
+}
+
+/* navbar 높이 + 색상 */
+.container-fluid {
+    height: 70px; /* 고정된 높이 */
+    background-color: #20c997;
+}
+
+/* 로고 이미지 */
+.navbar-brand {
+    margin-left: 10%; /* 자동으로 왼쪽 마진 조정 */
+}
+
+/* 홈 + 채용 공고 + 회사 리뷰 + 로그인 + 회원가입 */
+.nav-item {
+    margin: 0 2em; /* 여백을 상대적으로 조정 */
+}
+
+#navbarSupportedContent > ul > li>a{
+    color:white;
+    font-weight: bold;
+}
+
+/* 홈 + 채용 공고 + 회사 리뷰 */
+#navbarSupportedContent > ul > li:nth-child(-n+3) > a {
+    margin-top:0.5em;
+    font-size: 20px; /* 폰트 크기 조정 */
+    width:200%;
+}
+
+
+/* 로그인과 회원가입 */
+#navbarSupportedContent > ul > li:nth-child(4) > a,
+#navbarSupportedContent > ul > li:nth-child(5) > a {
+    font-size:15px;
+    margin-top: 2em; /* 동일한 여백 적용 */
+    width:200%;
+}
+
+/* 로그인 */
+#navbarSupportedContent > ul > li:nth-child(4)>a{
+    margin-left:30em;
+
+}
+
+/* 회원가입 */
+#navbarSupportedContent > ul > li:nth-child(5)>a{
+    margin-left:-2em;
+
+}
+
+
+/* 홈 + 채용 공고 + 회사 리뷰 + 로그인 + 회원가입 클릭 시 */
+#navbarSupportedContent > ul > li > a:hover {
+    color: yellow;
+}
+
+/* ---------------- navbar ---------------- */
+
+.pagination.justify-content-center{
+    margin:1.5em 0;
+}
+
+.pagination .page-item .page-link {
+    color: black; /* 기본 텍스트 색상 */
+    background-color: white; /* 기본 배경색 */
+    border: 1px solid #ddd; /* 테두리 */
+  }
+
+  .pagination .page-item .page-link:hover {
+    background-color: #f0f0f0; /* 호버 효과 */
+    color: black; /* 호버 시 텍스트 색상 */
+  }
+
+  .pagination .page-item.active .page-link {
+    background-color: #38B2A5; /* 활성화된 항목의 배경색 */
+    color: white; /* 활성화된 항목의 텍스트 색상 */
+  }
+
+  /* ---------------- 페이징 ---------------- */
+
+
+  /* 프로필 베이스 중앙정렬*/
+.center_pro_base {
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 770px;
+    margin : 50px 0 0 270px;
+    border : 10px;
+  }
+
+  /* 프로필 베이스 안에 글씨들*/
+  .text_card{
+    text-align: center; /* 텍스트를 가로 중앙 정렬 */
+    padding : 10px;
+  }
+
+  /*프로필 정렬에 사용*/
+  .line {
+    width: 1000px;
+    height : 500px;
+    min-height: 50vh; /* 전체 높이를 기준으로 중앙 정렬 */
+    margin : 100px 0 0 170px;
+  }
+
+
+/* 프로필 - 기본정보 + 게시 + 답변 + 댓글 + 추천 */
+.nav-link {
+    color: black; /* 기본 색상 */
+    text-decoration: none;
+    width:100%;
+}
+
+.nav-link:hover{
+    color:#20c997;
+}
+
+/* 클릭된 탭에 스타일 추가 */
+.nav-link.active {
+    color: #38B2A5 !important; /* 클릭된 색상 */
+    font-weight: bold; /* 강조 (선택사항) */
+}
+
+/* 프로필 -> 최신순 / 추천순 */
+.form-control.so.my-3{
+    text-align: center;
+    float:left;
+    width:10%;
+}
+
+/* 프로필 -> 글 제목 */
+body > div > div > div.line > table > tbody > tr> td.text-left > a{
+    text-decoration: none;
+    color:black;
+}
+
+/* 프로필 -> 작성일시 */
+body > div > div > div.line > table > tbody > tr > td:nth-child(5){
+    font-size:0.8em;
+}
+
+.text-left a:hover {
+    color: #38B2A5 !important;
+}
+
+
+/* 프로필 -> h4( 이름 ) */
+.border-bottom.pb-2.my-3{
+    text-align: center;
+    font-weight:bold;
+}
+
+/* 프로필 -> 기본 정보 + 게시 + 답변 + 댓글 + 추천 */
+.nav.nav-tabs {
+    display: flex; /* Flexbox 활성화 */
+    justify-content: center; /* 가로축 중앙 정렬 */
+    list-style: none; /* 리스트 스타일 제거 */
+    padding: 0; /* 필요 시 기본 패딩 제거 */
+    margin: 0; /* 기본 마진 제거 */
+}
+
+.nav.nav-tabs .nav-item {
+    margin: 0 2.1em; /* 각 아이템 사이의 간격 (선택사항) */
+}
+ /* ---------------- 프로필 ---------------- */
+
+ /* 버튼 클릭시 노란색 */
+ .btn.btn-primary:hover{
+    color:yellow;
+ }
+
+

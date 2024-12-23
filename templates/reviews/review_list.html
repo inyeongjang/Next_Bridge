@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'review.css' %}">
+
+<div style = "margin: 90px 0 10px 0;">
+    <h4 class="border-bottom pb-2 my-3 text-center">회사 리뷰</h4>
+</div>
+<div style="width: 90%; margin: 0 auto;">
+    {% if review_list %}
+    <ul>
+        {% for review in review_list %}
+        <div style ="margin: 10px 0 20px 0;" >
+            <a href="{% url 'reviews:review_detail' review.id %}" class = "job-item-link">
+                <div class = "job-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ review.company.company_name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ review.author.username }}</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">평점:
+                                <span class="star-rating">
+                                    <!-- 채워진 별 표시 -->
+                                    {% for i in range %}
+                                        {% if forloop.counter <= review.rating %}
+                                            <span class="star filled">&#9733;</span> <!-- 채워진 별 -->
+                                        {% else %}
+                                            <span class="star">&#9734;</span> <!-- 빈 별 -->
+                                        {% endif %}
+                                    {% endfor %}
+                                </span>
+                                {{ review.rating }} / 5
+                            </h6>
+                            <p class="card-text">{{ review.comment }}</p>
+                            <p class="card-text"><small class="text-muted">{{ review.create_date|date:"y-m-d H:i" }}</small></p>
+                            <h6 class="card-subtitle mb-2 text-muted">추천인 수: {{ review.voter.count }}</h6>
+                        </a>
+                      </div>
+                    </div>
+                </div>
+            </a>
+            
+        </div>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>리뷰가 없습니다.</p>
+{% endif %}
+</div>
+
+</div>
+   
+{% endblock %}

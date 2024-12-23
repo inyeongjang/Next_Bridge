@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load home_filter %}
+
+{% block content %}
+<div class="line">
+    <h4 class="border-bottom pb-2 my-3">{{ profile_user.username }}</h4>
+    {% include "common/profile/profile_tabs.html" %}
+
+    <!-- 답변 표시 Start -->
+    <table class="table">
+        <thead>
+            <tr class="text-center thead-dark">
+                <th>번호</th>
+                <th>구분</th>
+                <th style="width:50%">내용</th>
+                <th>작성일시</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if page_obj %}
+        {% for object in page_obj %}
+        <tr class="text-center">
+            <td>
+                <!-- 번호 = 전체건수 - 시작인덱스 - 현재인덱스 + 1 -->
+                {{ page_obj.paginator.count|sub:page_obj.start_index|sub:forloop.counter0|add:1 }}
+            </td>
+            <td>
+                {% if object.question %}
+                    {{ object.question.category.description }}{#| 질문#}
+                {% else %}
+                    {{ object.answer.question.category.description }}{#| 답변#}
+                {% endif %}
+            </td>
+            <td class="text-left">
+                <a href="{{ object.get_absolute_url }}">{{ object }}</a>
+            </td>
+            <td>{{ object.create_date }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr style="border-bottom: 2px solid #dee2e6; width: 500px;">
+            <td colspan="3">등록한 댓글이 없습니다.</td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+
+
+<!-- 페이징처리 시작 -->
+<ul class="pagination justify-content-center">
+    <!-- 이전페이지 -->
+    {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" data-page="1" href="#">처음</a>
+        </li>
+       <li class="page-item">
+            <a class="page-link" data-page="{{ page_obj.previous_page_number }}" href="#">이전</a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">처음</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+        </li>
+    {% endif %}
+    <!-- 페이지리스트 -->
+    {% for page_number in page_obj.paginator.page_range %}
+        {% if page_number >= page_obj.number|add:-4 and page_number <= page_obj.number|add:4 %}
+            {% if page_number == page_obj.number %}
+            <li class="page-item active" aria-current="page">
+                <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+            </li>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    <!-- 다음페이지 -->
+    {% if page_obj.has_next %}
+        <li class="page-item">
+             <a class="page-link" data-page="{{ page_obj.next_page_number }}" href="#">다음</a>
+        </li>
+        <li class="page-item">
+             <a class="page-link" data-page="{{ page_obj.paginator.num_pages }}" href="#">끝</a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">끝</a>
+        </li>
+    {% endif %}
+</ul>
+<!-- 페이징처리 끝 -->
+
+<form id="searchForm" method="get">
+    <input type="hidden" id="page" name="page" value="{{ page }}">
+    <input type="hidden" id="so" name="so" value="{{ so }}">
+</form>
+{% endblock %}
+
+{% block script %}
+<!-- 페이징 -->
+<script type='text/javascript'>
+const page_elements = document.getElementsByClassName("page-link");
+Array.from(page_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        document.getElementById('page').value = this.dataset.page;
+        document.getElementById('searchForm').submit();
+    });
+});
+const btn_search = document.getElementById("btn_search");
+btn_search.addEventListener('click', function() {
+    document.getElementById('kw').value = document.getElementById('search_kw').value;
+    document.getElementById('page').value = 1;  // 검색버튼을 클릭할 경우 1페이지부터 조회한다.
+    document.getElementById('searchForm').submit();
+});
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load home_filter %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'question_list.css' %}"> <!-- css코드 -->
+<script src="{% static 'style.js' %}"></script> <!-- js코드 -->
+<div class="container my-3">
+    <!-- 전체 레이아웃을 행(row)으로 설정 -->
+    <div class="row">
+       <!-- 테이블 섹션: 왼쪽 8 열 -->
+        <div class="col-md-8">
+            <!-- 검색 버튼 -->
+            <div class="col-4 input-group">
+                <input type="text" id ="search_kw" class="form-control" value="{{ kw|default_if_none:'' }}">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="btn_search">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                       </svg>
+                    </button>
+                </div>
+            </div>
+
+            <h4 class="border-bottom pb-2 my-3">{{ category.description }}</h4>
+
+            <div class="row align-items-center justify-content-between my-3">
+                <div class="col-auto">
+                    <select class="form-control so">
+                        <option value="recent" {% if so == 'recent' %}selected{% endif %}>최신순</option>
+                        <option value="recommend" {% if so == 'recommend' %}selected{% endif %}>추천순</option>
+                        <option value="popular" {% if so == 'popular' %}selected{% endif %}>답변순</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <a href="{% url 'home:question_create' category.name %}" class="btn btn-primary">질문 등록하기</a>
+                </div>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr class="text-center thead-dark">
+                        <th>번호</th>
+                        <th>추천</th>
+                        <th style="width:50%">제목</th>
+                        <th>글쓴이</th>
+                        <th>작성일시</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if question_list %}
+                {% for question in question_list %}
+                <tr class="text-center">
+                    <td>
+                        <!-- 번호 = 전체건수 - 시작인덱스 - 현재인덱스 + 1 -->
+                        {{ question_list.paginator.count|sub:question_list.start_index|sub:forloop.counter0|add:1 }}
+                    </td>
+                    <td>
+                        {% if question.voter.all.count > 0 %}
+                            <span class="badge badge-warning px-2 py-1" style="color:#20c997;">{{ question.voter.count }}</span>
+                                <!-- question.voter.count와 완전히 같은 쿼리(SQL문 동일) -->
+                        {% else %}
+                            <span class="badge badge-light px-2 py-1" style="color:#ccc;">0</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-left">
+                        <a href="{{ question.get_absolute_url }}">{{ question.subject }}</a>
+                        {% if question.answer_set.count > 0 %}
+                        <span class="text-danger small ml-2">{{ question.answer_set.count }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if question.author.profile.country %}
+                            <span class="fi fi-{{ question.author.profile.country.code|lower }}"></span>
+                        {% endif %}
+                        <a href="{% url 'common:profile_base' question.author.id %}">{{ question.author.username }}</a>
+                    </td>
+                    <td>{{ question.create_date }}</td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="3">질문이 없습니다.</td>
+                </tr>
+                {% endif %}
+                </tbody>
+            </table>
+            <!-- 페이징처리 시작 -->
+            <ul class="pagination justify-content-center">
+                <!-- 이전페이지 -->
+                {% if question_list.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" data-page="1" href="#">처음</a>
+                    </li>
+                   <li class="page-item">
+                        <a class="page-link" data-page="{{ question_list.previous_page_number }}" href="javascript:void(0)">이전</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">처음</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+                    </li>
+                {% endif %}
+                <!-- 페이지리스트 -->
+                {% for page_number in question_list.paginator.page_range %}
+                    {% if page_number >= question_list.number|add:-4 and page_number <= question_list.number|add:4 %}
+                        {% if page_number == question_list.number %}
+                        <li class="page-item active" aria-current="page">
+                            <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item">
+                            <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+                        </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                <!-- 다음페이지 -->
+                {% if question_list.has_next %}
+                    <li class="page-item">
+                         <a class="page-link" data-page="{{ question_list.next_page_number }}" href="#">다음</a>
+                    </li>
+                    <li class="page-item">
+                         <a class="page-link" data-page="{{ question_list.paginator.num_pages }}" href="#">끝</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">끝</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <!-- 페이징처리 끝 -->
+
+        </div>
+         <!-- 카드 섹션: 오른쪽 4 열 -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    실시간 인기 회사
+                </div>
+                <ul class="list-group list-group-flush">
+                    <!-- 회사 이름 10개 출력 -->
+                    {% for company in companies %}
+                    <li class="list-group-item">{{ forloop.counter }}. {{ company.company_name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 검색 기능 -->
+<form id="searchForm" method="get" action="{{ category.get_absolute_url }}">
+    <input type="hidden" id="kw" name="kw" value="{{ kw|default_if_none:'' }}">
+    <input type="hidden" id="page" name="page" value="{{ page }}">
+    <input type="hidden" id="so" name="so" value="{{ so }}">
+</form>
+{% endblock %}
+
+{% block script %}
+<script type='text/javascript'>
+const page_elements = document.getElementsByClassName("page-link");
+Array.from(page_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        document.getElementById('page').value = this.dataset.page;
+        document.getElementById('searchForm').submit();
+    });
+});
+const btn_search = document.getElementById("btn_search");
+btn_search.addEventListener('click', function() {
+    document.getElementById('kw').value = document.getElementById('search_kw').value;
+    document.getElementById('page').value = 1;  // 검색버튼을 클릭할 경우 1페이지부터 조회한다.
+    document.getElementById('searchForm').submit();
+});
+</script>
+<script type="text/javascript">
+document.querySelector('.so').addEventListener('change', function() {
+    // 선택한 정렬 값을 hidden input에 업데이트
+    document.getElementById('so').value = this.value;
+    // 검색 폼을 제출
+    document.getElementById('searchForm').submit();
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'review.css' %}">
+
+<div style = "margin : 100px 0 0 0;">
+    <div style = "margin : 0 0 20px 0;">
+        <h3 class="pb-2 my-3 text-center">{{ company.company_name }}</h3>
+    </div>
+    <h5 class="border-bottom pb-2 my-3 text-center">{{ company.upper_region }} {{ company.lower_region }}</h5>
+    
+    <!-- 탭 네비게이션 -->
+     <div></div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation" style ="margin-right: 300px;">
+          <a class="nav-link active" id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="true">리뷰</a>
+        </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="jobs-tab" data-bs-toggle="tab" href="#jobs" role="tab" aria-controls="jobs" aria-selected="false">채용 공고</a>
+      </li>
+    </ul>
+    
+    <div class="tab-content" id="myTabContent">
+      <!-- 리뷰 탭 내용 -->
+      <div class="tab-pane fade show active" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+    
+        <!-- 리뷰 검색창 -->
+        <div style = " margin : 50px 0 50px 400px">
+            <div>
+                <div class="row my-3">
+                    <div class="col-6">
+                        <div class="input-group">
+                            <input type="text" id="search_kw" class="form-control" value="{{ kw|default_if_none:'' }}" placeholder="리뷰를 검색해보세요.">
+                            <div class="input-group-append">
+                                <button class="btn_btn-outline-secondary" type="button" id="btn_search">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                  </svg></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- 리뷰 리스트 -->
+         <div style="width: 90%; margin: 0 auto;">
+            {% if reviews %}
+            <ul>
+                {% for review in reviews %}
+                <a href="{%  url 'reviews:review_detail' review.id  %}" class="job-item-link">
+                    <div  class="job-item ">
+                        <div class="card mb-4 rounded-3 shadow-sm">
+                            <div class="card-body">
+                                <h4 class="card-title" style = "margin: 0 0 10px 0;">{{ review.company.company_name }}</h4>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ review.author.username }}</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">평점:
+                                    <span class="star-rating">
+                                        <!-- 채워진 별 표시 -->
+                                        {% for i in range %}
+                                            {% if forloop.counter <= review.rating %}
+                                                <span class="star filled">&#9733;</span> <!-- 채워진 별 -->
+                                            {% else %}
+                                                <span class="star">&#9734;</span> <!-- 빈 별 -->
+                                            {% endif %}
+                                        {% endfor %}
+                                    </span>
+                                    {{ review.rating }} / 5
+                                </h6>
+                                
+                                <div style = " font-size: 20px; margin : 5px 0 20px 0;">
+                                    <p class="card-text">{{ review.comment|truncatewords:30 }}</p> <!-- 긴 댓글을 말줄임표 처리 -->
+                                </div>
+                                <p class="card-text"><small class="text-muted">{{ review.create_date|date:"Y-m-d H:i" }}</small></p>
+                                <span>{% if review.modify_date %}{{ review.modify_date|date:"Y-m-d H:i" }}{% else %}{% endif %}</span>
+                                <h6 class="card-subtitle mb-2 text-muted">추천인 수: {{ review.voter.count }}</h6>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>이 회사에 대한 리뷰가 없습니다.</p>
+        {% endif %}
+    
+         </div>
+        <!-- 검색 폼 -->
+        <form id="searchForm" method="get" action="{% url 'reviews:company_reviews' company.id %}">
+            <input type="hidden" id="kw" name="kw" value="{{ kw|default_if_none:'' }}">
+        </form>
+    
+      </div>
+    
+      <!-- 채용 공고 탭 -->
+        <div class="tab-pane fade" id="jobs" style="width: 90%; margin: 0 auto;">
+            <!-- 회사에 해당하는 채용 공고가 있다면 표시 -->
+            <div style = "margin: 50px 0 0 0;">
+                {% for job in jobs %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 style = "font-weight: bold;" class="card-title">{{ job.title }}</h5>
+                        <br>
+                        <h6 class="card-text">{{ job.description|slice:":150" }}...</h6> <!-- 내용 일부만 표시 -->
+                        <br>
+                        <div class="job_job_2"><a href="{% url 'jobs:job_detail' job.id %}">자세히 보기</a></div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>이 회사에 대한 채용 공고가 없습니다.</p>
+            {% endfor %}
+            </div>
+        </div>
+        
+    
+    </div>
+    
+</div>
+{% endblock %}
+{% block script %}
+
+<script type="text/javascript">
+const btn_search = document.getElementById("btn_search");
+btn_search.addEventListener('click', function() {
+    document.getElementById('kw').value = document.getElementById('search_kw').value;
+    document.getElementById('searchForm').submit();
+});
+
+// 페이지 로드 후 URL 해시값을 확인하여 "채용 공고" 탭 활성화
+document.addEventListener('DOMContentLoaded', function () {
+    // URL에 '#jobs'가 있는지 확인
+    if (window.location.hash === '#jobs') {
+        // '채용 공고' 탭을 활성화
+        const jobsTab = document.querySelector('#jobs-tab');
+        const jobsPane = document.querySelector('#jobs');
+
+        // Bootstrap의 활성화 클래스를 추가하여 '채용 공고' 탭을 활성화
+        if (jobsTab && jobsPane) {
+            jobsTab.classList.add('active');
+            jobsPane.classList.add('show', 'active');
+
+            // '리뷰' 탭 비활성화
+            const reviewsTab = document.querySelector('#reviews-tab');
+            const reviewsPane = document.querySelector('#reviews');
+
+            if (reviewsTab && reviewsPane) {
+                reviewsTab.classList.remove('active');
+                reviewsPane.classList.remove('show', 'active');
+            }
+        }
+    }
+});
+</script>
+
+{% endblock %}
+

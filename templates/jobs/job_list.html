@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'job_list.css' %}">
+
+<form method="get">
+    <div style="display: flex;justify-content: space-between; margin : 100px 0 30px 0">
+
+        <div style="display: flex ; align-items: center; ">
+            <label for="upper_field" class ="from-label" style = "padding-right: 10px;">분야</label>
+            <select id="upper_field" name="upper_field" class = "form-select  w-auto" onchange="updateDetails()">
+                <option value="" {% if not upper_field %}selected{% endif %}>선택하세요</option>
+                {% for category, details in fields_hierarchy.items %}
+                    <option value="{{ category }}" {% if field == category %}selected{% endif %}>{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- 직무 (소분류) 선택 -->
+        <div style="display: flex ; align-items: center;">
+            <label for="lower_field" class ="from-label"  style = "padding-right: 10px;">직무</label>
+            <select id="lower_field" name="lower_field"  class = "form-select  w-auto" {% if not upper_field %}disabled{% endif %}>
+                <option value="" {% if not lower_field %}selected{% endif %}>선택하세요</option>
+                {% for category, details in fields_hierarchy.items %}
+                    {% for detail in details %}
+                        <option value="{{ detail }}" data-parent="{{ category }}" {% if job_detail == detail %}selected{% endif %}>
+                            {{ detail }}
+                        </option>
+                    {% endfor %}
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- 근무지 (대분류) 선택 -->
+        <div style="display: flex ; align-items: center;">
+            <label for="upper_region" class ="from-label"  style = "padding-right: 10px;">도/특별시/광역시</label>
+            <select id="upper_region" name="upper_region"  class = "form-select  w-auto" onchange="updateDetails()">
+                <option value="" {% if not upper_region %}selected{% endif %}>선택하세요</option>
+                {% for category, details in regions_hierarchy.items %}
+                    <option value="{{ category }}" {% if field == category %}selected{% endif %}>{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- 근무지 (소분류) 선택 -->
+        <div style="display: flex ; align-items: center;">
+            <label for="lower_region" class ="from-label"  style = "padding-right: 10px;">시/군/구</label>
+            <select id="lower_region" name="lower_region" class = "form-select  w-auto"  {% if not upper_region %}disabled{% endif %}>
+                <option value="" {% if not lower_region %}selected{% endif %}>선택하세요</option>
+                {% for category, details in regions_hierarchy.items %}
+                    {% for detail in details %}
+                        <option value="{{ detail }}" data-parent="{{ category }}" {% if job_detail == detail %}selected{% endif %}>
+                            {{ detail }}
+                        </option>
+                    {% endfor %}
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="col-4 input-group mb-3">
+        <input type="text" placeholder="회사명이나 직무, 제목을 검색해보세요"   name="query" id ="search_kw" class="form-control" value="{{ query }}">
+        <div class="input-group-append">
+            <button type="submit" id="btn_search" class="btn_btn-outline-secondary" >
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+              </svg>
+            </button>
+        </div>
+    </div>
+
+</form>
+
+<!-- 공고 개수 표시 -->
+<div style = "margin: 50px 0 10px 0;">
+    <div style="display: flex; align-items: center;">
+        <div style = "margin : 0 5px 0 0;">총</div>
+        <div style="color: #03C75A "> {{ jobs.paginator.count }} </div>
+        <div style ="margin : 0 0 0 5px;">개 공고</div>
+    </div>
+</div>
+
+<!--채용 공고 목록-->
+<div class="job-list">
+
+    {% for job in jobs %}
+    <a href="{% url 'jobs:job_detail' job.id %}" class="job-item-link">
+        <div class="job-item ">
+            <div class="job-content">
+                <div class="company_name">{{ job.company_name }}</div>
+                    <div class="job-title">{{ job.title }}</div>
+                    <div style="display: flex; align-items: center;">
+                        <div class="job-details">{{ job.upper_region }} {{ job.lower_region }}</div>
+                        <div class="job-details">{{ job.salary }}</div>
+                        <div class="job-details">{{ job.upper_field }}</div>
+                    </div>
+            </div>
+        </div>
+    </a>
+    {% empty %}
+        <p>현재 등록된 채용 공고가 없습니다.</p>
+    {% endfor %}
+</div>
+
+
+
+
+<!-- 페이지네이션 -->
+<ul class="pagination justify-content-center">
+    <!-- 이전페이지 -->
+    {% if jobs.has_previous %}
+    <li class="page-item">
+        <a class="page-link" data-page="{{ jobs.previous_page_number }}" href="javascript:void(0)">이전</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+    </li>
+    {% endif %}
+
+    <!-- 페이지리스트 -->
+    {% for page_number in jobs.paginator.page_range %}
+    {% if page_number >= jobs.number|add:-5 and page_number <= jobs.number|add:5 %}
+    {% if page_number == jobs.number %}
+    <li class="page-item active" aria-current="page">
+        <a class="page-link" data-page="{{ page_number }}" href="javascript:void(0)">{{ page_number }}</a>
+    </li>
+    {% else %}
+    <li class="page-item">
+        <a class="page-link" data-page="{{ page_number }}" href="javascript:void(0)">{{ page_number }}</a>
+    </li>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+
+    <!-- 다음페이지 -->
+    {% if jobs.has_next %}
+    <li class="page-item">
+        <a class="page-link" data-page="{{ jobs.next_page_number }}" href="javascript:void(0)">다음</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+    </li>
+    {% endif %}
+</ul>
+
+{% endblock %}
+{% block script %}
+
+<!-- 검색 스크립트 -->
+<script type='text/javascript'>
+    const pageElements = document.getElementsByClassName("page-link");
+    Array.from(pageElements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('page', this.dataset.page);
+            window.location.search = urlParams.toString();
+        });
+    });
+</script>
+
+<script>
+    function updateDetails() {
+        const upperFieldSelect = document.getElementById("upper_field");
+        const lowerFieldSelect = document.getElementById("lower_field");
+        const upperRegionSelect = document.getElementById("upper_region");
+        const lowerRegionSelect = document.getElementById("lower_region");
+
+        // 직무 소분류와 근무지 소분류를 초기화
+        lowerFieldSelect.disabled = !upperFieldSelect.value;
+        lowerRegionSelect.disabled = !upperRegionSelect.value;
+
+        // 소분류 옵션을 대분류에 맞게 보여주기
+        lowerFieldSelect.querySelectorAll("option[data-parent]").forEach(option => {
+            option.style.display = option.getAttribute("data-parent") === upperFieldSelect.value ? "block" : "none";
+        });
+        lowerRegionSelect.querySelectorAll("option[data-parent]").forEach(option => {
+            option.style.display = option.getAttribute("data-parent") === upperRegionSelect.value ? "block" : "none";
+        });
+
+        // 선택값 초기화
+        if (!upperFieldSelect.value) {
+            lowerFieldSelect.value = "";
+        }
+        if (!upperRegionSelect.value) {
+            lowerRegionSelect.value = "";
+        }
+    }
+
+    // 페이지 로드 시 초기화
+    document.addEventListener("DOMContentLoaded", () => {
+        updateJobDetails();
+    });
+</script>
+
+{% endblock %}
+

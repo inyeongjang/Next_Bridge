@@ -1,0 +1,155 @@
+.review_box{
+  
+  width: 900px; /* 부모 크기에 맞게 자동 조정 */
+  border: solid 2px #20c997;
+  margin: 30px auto;
+  font-size: 14px;
+  border-radius: 5px; /* 모서리 둥글게 */
+  height : 275px;
+}
+
+  /* 검색바 */
+  #search_kw{
+    height:50px;
+    background-color: white;
+    border: 2px solid #20c997; /* 테두리 색 */
+    border-radius: 50px 0 0 50px; /* 왼쪽 모서리 둥글게 */
+    outline: none; /* 포커스 시 기본 외곽선 제거 */
+    border-right-color:gainsboro;
+  }
+  
+  /* 찾기 */
+  .btn_btn-outline-secondary{
+    height:50px;
+    background-color: white;
+    border: 2px solid #20c997; /* 테두리 색 */
+    border-radius: 0 50px 50px 0; /* 왼쪽 모서리 둥글게 */
+    outline: none; /* 포커스 시 기본 외곽선 제거 */
+    border-left:none;
+  }
+
+#btn_search:hover{
+    color:#20c997;
+}
+/*링크상자*/
+
+.job_job_2 {
+  width: 100px; /* 상자의 너비 */
+  padding: 10px; /* 내부 여백 */
+  background-color: #38B2A5; /* 상자 배경색 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+  color: white; /* 글자 색 */
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+
+.job_job_2>a:hover{
+  color:yellow;
+    }
+  
+    a {
+      color: white;  /* 기본 링크 색상 (파란색) */
+      text-decoration: none;  /* 밑줄 제거 */
+    }
+
+    .job_job_3 {
+      width: 150px; /* 상자의 너비 */
+      padding: 10px; /* 내부 여백 */
+      background-color: #38B2A5; /* 상자 배경색 */
+      text-align: center; /* 텍스트 중앙 정렬 */
+      color: white; /* 글자 색 */
+      font-size: 15px;
+      display: flex;
+      justify-content: center;
+    }
+    
+    
+    .job_job_3>a:hover{
+      color:yellow;
+        }
+/*----------링크 상자*/
+
+/* 박스 링크로 묶은거*/
+  
+.job-item-link {
+  text-decoration: none; /* 밑줄 제거 */
+  color: inherit; /* 텍스트 색상 상속 */
+  display: block; /* 링크를 블록으로 만들어 카드 전체를 클릭 가능 */
+  margin: 10px 0;
+}
+
+.job-item {
+  transition: transform 0.2s, box-shadow 0.2s; /* 마우스 올릴 때 애니메이션 */
+}
+
+.job-item:hover {
+  transform: scale(1.02); /* 살짝 확대 */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+}
+/*박스 링크------*/
+
+.btn-custom {
+  background-color: #38B2A5; /* 원하는 배경색 */
+  color: white;            /* 텍스트 색 */
+  border: none;            /* 테두리 제거 (필요시) */
+  height: 40px;
+}
+
+.btn-custom:hover {
+  background-color: yellow; /* 마우스 올렸을 때 색 */
+}
+
+/* 추천 버튼 */
+.recommend.btn.btn-sm.btn-secondary.btn-block.my-1{
+  background-color: #38B2A5;
+  border:none;
+}
+
+/* 회사 제목*/
+body > div > div > div > div:nth-child(1) > h3{
+  font-weight: bold;
+}
+
+/* 추천하기 */
+.recommend.btn.btn-sm.btn-secondary{
+ border:none;
+  background-color: #38B2A5;
+}
+
+body > div > div > div:nth-child(3) > ul > div > div > div{
+  width:90%; /* 박스 가로 크기 */
+  margin: 2em auto; /* 화면 가운데 정렬 */
+  background-color: white; /* 박스 배경색 */
+  border: 3px solid #ccc; /* 박스 테두리 */
+  border-radius: 10px !important; /* 모서리를 둥글게 만듦 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+
+  transition: transform 0.2s, box-shadow 0.2s; /* 마우스 올릴 때 애니메이션 */
+}
+
+body > div > div > div:nth-child(3) > ul > div > div > div:hover {
+  transform: scale(1.02); /* 살짝 확대 */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+}
+
+.card{
+  border:none;
+}
+
+.card-title{
+  color:#03C75A;
+  font-weight: bold;
+}
+
+body > div > div > div.card.mb-4.rounded-3.shadow-sm > div > h3{
+  color:black;
+}
+
+/* 수정 + 삭제 버튼 */
+.btn .btn-sm .btn-outline-secondary{
+margin-right:1em;
+}
+
